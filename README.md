@@ -21,4 +21,17 @@ my_doc_dict = documented_dict(my_dict)
 
 my_doc_dict["first_name"].value  # Get value of key
 my_doc_dict["first_name"].doc  # Get doc of key
+
+
+my_dict = {
+    "first_name": "Mike",
+    "last_name": "Anderson",
+}
+my_dict_doc = {
+    "first_name": "It's name field",
+}
+
+my_doc_dict = documented_dict(my_dict, my_dict_doc)
+my_doc_dict["first_name"].value  # Get value of key
+my_doc_dict["first_name"].doc  # Get doc of key
 ```
