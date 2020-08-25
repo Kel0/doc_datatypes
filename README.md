@@ -16,4 +16,7 @@ my_dict = {
 }
 
 my_doc_dict = documented_dict(my_dict)
+
+my_doc_dict["first_name"].value  # Get value of key
+my_doc_dict["first_name"].doc  # Get doc of key
 ```
