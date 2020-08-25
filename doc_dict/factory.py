@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import Any, Dict, List, Union
+from typing import Any, Dict, List
 
 from .datastructures import DocumentedValue
 
@@ -8,7 +8,7 @@ from .datastructures import DocumentedValue
 def documented_dict(content: Dict[str, Any]) -> Dict[str, DocumentedValue]:
     dict_: Dict[str, DocumentedValue] = {}
 
-    value_keys: List[Union[str]] = [
+    value_keys: List[str] = [
         value_key for value_key in content if "_doc" not in value_key
     ]
     value_key: str

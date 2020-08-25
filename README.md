@@ -1,8 +1,10 @@
 # doc_dict
 ## Installation
 ```
-pip install invoke
-inv install
+git clone git@github.com:Kel0/doc_dict.git
+```
+```
+pip install doc-dict
 ```
 ## Usage
 ```

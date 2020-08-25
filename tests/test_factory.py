@@ -1,7 +1,7 @@
 from doc_dict.factory import documented_dict
 
 
-def test_documented_value():
+def test_documented_dict():
     my_dict = {
         "first_name": "Mike",
         "first_name_doc": "It's name field",
