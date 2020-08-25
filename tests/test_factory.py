@@ -9,7 +9,7 @@ def test_documented_value():
     }
 
     my_doc_dict = documented_dict(my_dict)
-    assert my_doc_dict == {
-        "first_name": {"value": "Mike", "__doc__": "It's name field"},
-        "last_name": {"value": "Anderson", "__doc__": "no docs"},
-    }
+    assert my_doc_dict["first_name"].value == "Mike"
+    assert my_doc_dict["first_name"].doc == "It's name field"
+    assert my_doc_dict["last_name"].value == "Anderson"
+    assert my_doc_dict["last_name"].doc == "no docs"
