@@ -1,4 +1,4 @@
-from app.factory import documented_dict
+from doc_dict.factory import documented_dict
 
 
 def test_documented_value():

@@ -1,6 +1,6 @@
 import invoke
 
-PACKAGE = "app"
+PACKAGE = "doc_dict"
 REQUIRED_COVERAGE = 90
 
 
