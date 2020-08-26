@@ -13,4 +13,4 @@ class Factory:
         return documented_dict(content, content_doc_dict)
 
     def serialize(self, content: Dict[str, DocumentedValue]) -> str:
-        return json.dumps({key: value.serialize() for key, value in content.items()})
+        return json.dumps({key: value.to_dict() for key, value in content.items()})
