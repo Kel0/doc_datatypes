@@ -7,7 +7,7 @@ class DocumentedValue:
     value: str
     doc: str
 
-    def serialize(self):
+    def to_dict(self):
         return {"value": self.value, "doc": self.doc}
 
     def __repr__(self):  # pragma: no cover
