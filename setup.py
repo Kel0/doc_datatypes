@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="doc_dict",
-    version="0.0.1",
+    version="0.0.3",
     author="Example Author",
     author_email="rickeyfsimple@example.com",
     description="Dict with documentation _-_",

@@ -8,8 +8,10 @@ pip install doc-dict
 ```
 ## Usage
 ```
-from doc_dict.factory import documented_dict
+from doc_dict.factory import Factory
 
+
+documented_dict = Factory()
 
 my_dict = {
     "first_name": "Mike",
@@ -17,7 +19,7 @@ my_dict = {
     "last_name": "Anderson",
 }
 
-my_doc_dict = documented_dict(my_dict)
+my_doc_dict = documented_dict.load(my_dict)
 
 my_doc_dict["first_name"].value  # Get value of key
 my_doc_dict["first_name"].doc  # Get doc of key
@@ -31,7 +33,18 @@ my_dict_doc = {
     "first_name": "It's name field",
 }
 
-my_doc_dict = documented_dict(my_dict, my_dict_doc)
+my_doc_dict = documented_dict.load(my_dict, my_dict_doc)
 my_doc_dict["first_name"].value  # Get value of key
 my_doc_dict["first_name"].doc  # Get doc of key
+
+serialized_doc_dict = documented_dict.serialize(my_doc_dict) 
+```
+
+## Types
+```
+doc_dict.datastructures.DocumentedValue
+
+doc_dict.factory.Factory().load() -> Dict[str, DocumentedValue]
+
+doc_dict.factory.Factory().serialize() -> str
 ```
