@@ -1,4 +1,4 @@
-# doc_dict
+# doc_datatypes
 ## Installation
 ```
 git clone git@github.com:Kel0/doc_dict.git
@@ -8,43 +8,19 @@ pip install doc-dict
 ```
 ## Usage
 ```
-from doc_dict.factory import Factory
+from doc_datatypes.mutable_datatypes import DocumentedList
+from doc_datatypes.datatypes import DocumentedIndex
 
 
-documented_dict = Factory()
-
-my_dict = {
-    "first_name": "Mike",
-    "first_name_doc": "It's name field",
-    "last_name": "Anderson",
-}
-
-my_doc_dict = documented_dict.load(my_dict)
-
-my_doc_dict["first_name"].value  # Get value of key
-my_doc_dict["first_name"].doc  # Get doc of key
-
-
-my_dict = {
-    "first_name": "Mike",
-    "last_name": "Anderson",
-}
-my_dict_doc = {
-    "first_name": "It's name field",
-}
-
-my_doc_dict = documented_dict.load(my_dict, my_dict_doc)
-my_doc_dict["first_name"].value  # Get value of key
-my_doc_dict["first_name"].doc  # Get doc of key
-
-serialized_doc_dict = documented_dict.serialize(my_doc_dict) 
+my_list: List[DocumentedIndex] = DocumentedList(
+    [1, 2, 3], ["First", "Second", "Third"]
+)
+my_list_2: List[DocumentedIndex] = DocumentedList(
+    [[1, "First"], [2, "Second"], [3, "Third"]]
+)
 ```
 
-## Types
-```
-doc_dict.datastructures.DocumentedValue
+To get more info see [tests](https://github.com/Kel0/doc_datatypes/tree/master/tests)
 
-doc_dict.factory.Factory().load() -> Dict[str, DocumentedValue]
-
-doc_dict.factory.Factory().serialize() -> str
-```
+# Contacts
+@dead_lynxx
