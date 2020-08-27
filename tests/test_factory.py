@@ -1,6 +1,6 @@
 import json
 
-from doc_dict.factory import Factory
+from doc_datatypes.factory import Factory
 
 
 def test_load():

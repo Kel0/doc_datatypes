@@ -1,6 +1,6 @@
 import invoke
 
-PACKAGE = "doc_dict"
+PACKAGE = "doc_datatypes"
 REQUIRED_COVERAGE = 90
 
 
