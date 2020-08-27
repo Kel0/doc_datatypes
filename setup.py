@@ -4,7 +4,7 @@ with open("README.md", "r") as fh:
     long_description = fh.read()
 
 setuptools.setup(
-    name="doc_dict",
+    name="doc_datatypes",
     version="0.0.3",
     author="Example Author",
     author_email="rickeyfsimple@example.com",

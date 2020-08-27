@@ -3,7 +3,8 @@ from __future__ import annotations
 import json
 from typing import Any, Dict
 
-from .datastructures import DocumentedValue, documented_dict
+from .datatypes import DocumentedValue
+from .mutable_datatypes import documented_dict
 
 
 class Factory:
