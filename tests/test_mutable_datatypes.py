@@ -1,6 +1,6 @@
 from pytest import raises
 
-from doc_datatypes.mutable_datatypes import DocumentedList
+from doc_datatypes.mutable_datatypes import DocumentedDict, DocumentedList
 
 
 def test_documented_list_general_cases():
@@ -63,3 +63,52 @@ def test_documented_list_case_2():
     assert my_list_second[2] == 3
     assert my_list_second.get_with_doc(2) == "3 -> no docs"
     assert my_list_second.get_doc(2) == "no docs"
+
+
+def test_documnted_dict_general_cases():
+    my_dict = DocumentedDict({})
+
+    assert my_dict == {}
+    my_dict["name"] = "Alex"
+    assert f'{my_dict.get_with_doc("name")}' == '{"value": "Alex", "doc": "no docs"}'
+    assert my_dict["name"] == "Alex"
+
+    my_dict["name1"] = ["Alex", "My docs"]
+    assert my_dict["name1"] == "Alex"
+    assert f'{my_dict.get_with_doc("name1")}' == '{"value": "Alex", "doc": "My docs"}'
+
+    del my_dict["name1"]
+    assert list(my_dict.keys()) == ["name"]
+
+
+def test_documented_dict_case_1():
+    my_dict = DocumentedDict({"name": "Alex"}, {"name": "Name field"})
+
+    assert repr(my_dict) == """{'name': {"value": "Alex", "doc": "Name field"}}"""
+    assert my_dict["name"] == "Alex"
+    assert f'{my_dict.get_with_doc("name")}' == '{"value": "Alex", "doc": "Name field"}'
+
+    my_dict_second = DocumentedDict({"name": "Alex"}, {})
+
+    assert repr(my_dict_second) == """{'name': {"value": "Alex", "doc": "no docs"}}"""
+    assert my_dict_second["name"] == "Alex"
+    assert (
+        f'{my_dict_second.get_with_doc("name")}'
+        == '{"value": "Alex", "doc": "no docs"}'
+    )
+
+    with raises(ValueError):
+        DocumentedDict({}, {"s": 1})
+
+
+def test_documented_dict_case_2():
+    my_dict = DocumentedDict({"name": "Alex", "name_doc": "Name field"})
+
+    assert repr(my_dict) == """{'name': {"value": "Alex", "doc": "Name field"}}"""
+    assert my_dict["name"] == "Alex"
+    assert f'{my_dict.get_with_doc("name")}' == '{"value": "Alex", "doc": "Name field"}'
+
+    my_dict_second = DocumentedDict({"name": "Alex"})
+
+    assert repr(my_dict_second) == """{'name': {"value": "Alex", "doc": "no docs"}}"""
+    assert my_dict_second["name"] == "Alex"

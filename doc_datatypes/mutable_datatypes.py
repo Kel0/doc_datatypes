@@ -1,7 +1,9 @@
 import collections
-from typing import Any, Dict, List, Tuple
+from typing import Any, Dict, List, Optional, Tuple, Union
 
 from .datatypes import DocumentedIndex, DocumentedValue
+
+DICT_CONTENT_TYPE = Dict[Union[str, int, float], Any]
 
 
 class DocumentedList(collections.abc.MutableSequence):
@@ -13,7 +15,7 @@ class DocumentedList(collections.abc.MutableSequence):
             self._inner_list.append(DocumentedIndex(value=value, doc=doc))
 
     def __validate_docs_content(  # type: ignore
-        self, content: List[Any], docs_content: List[str] = None
+        self, content: List[Any], docs_content: Optional[List[str]] = None
     ) -> Tuple[List[Any], List[str]]:
         """Validate content & docs_content data
 
@@ -92,29 +94,74 @@ class DocumentedList(collections.abc.MutableSequence):
         return f"{self._inner_list}"
 
 
-def documented_dict(  # pragma: no cover; todo
-    content: Dict[str, Any], content_doc_dict: Dict[str, str] = None
-) -> Dict[str, DocumentedValue]:
-    dict_: Dict[str, DocumentedValue] = {}
-    value_key: str
-    documented_value: DocumentedValue
+class DocumentedDict(collections.abc.MutableMapping):
+    def __init__(
+        self,
+        content: DICT_CONTENT_TYPE,
+        content_docs: Optional[DICT_CONTENT_TYPE] = None,
+    ) -> None:
+        self._inner_doc = {}
+        content, content_docs = self.__validate_docs_content(content, content_docs)
 
-    if not content_doc_dict:
-        value_keys: List[str] = [
-            value_key for value_key in content if "_doc" not in value_key
-        ]
-
-        for value_key in value_keys:
-            documented_value = DocumentedValue(
-                value=content[value_key], doc=content.get(f"{value_key}_doc", "no docs")
+        for value_key, doc_key in zip(content.keys(), content_docs.keys()):
+            self._inner_doc.update(
+                {
+                    value_key: DocumentedValue(
+                        value=content[value_key], doc=content_docs[doc_key]
+                    )
+                }
             )
-            dict_.update({value_key: documented_value})
 
-    elif content_doc_dict:
-        for value_key in content:
-            documented_value = DocumentedValue(
-                value=content[value_key], doc=content_doc_dict.get(value_key, "no docs")
-            )
-            dict_.update({value_key: documented_value})
+    def __validate_docs_content(
+        self,
+        content: Dict[Union[str, int, float], Any],
+        content_docs: Optional[Dict[Union[str, int, float], Any]],
+    ) -> Tuple[DICT_CONTENT_TYPE, DICT_CONTENT_TYPE]:
+        if content_docs is not None:
+            if len(content) < len(content_docs):
+                raise ValueError()
 
-    return dict_
+            for key, value in content.items():
+                doc: Optional[str] = content_docs.get(key, None)
+                if doc is None:
+                    content_docs[key] = "no docs"
+            return content, content_docs
+
+        elif content_docs is None:
+            temp_content_dict = {}
+            temp_content_doc_dict = {}
+
+            for content_key in [key for key in content.keys() if "_doc" not in key]:  # type: ignore
+                temp_content_dict[content_key] = content[content_key]
+                temp_content_doc_dict[content_key] = content.get(
+                    f"{content_key}_doc", "no docs"
+                )
+
+            return temp_content_dict, temp_content_doc_dict
+
+    def get_with_doc(
+        self, key: Union[str, int, float], placeholder: Optional[Any] = None
+    ) -> Any:
+        return self._inner_doc.get(key, placeholder)
+
+    def __getitem__(self, key) -> Any:
+        return self._inner_doc[key]()
+
+    def __setitem__(self, key, value) -> None:
+        if isinstance(value, list):
+            value = DocumentedValue(value=value[0], doc=value[1])
+        elif not isinstance(value, list):
+            value = DocumentedValue(value=value, doc="no docs")
+        self._inner_doc[key] = value
+
+    def __delitem__(self, key) -> None:
+        del self._inner_doc[key]
+
+    def __iter__(self) -> Any:
+        return iter(self._inner_doc)
+
+    def __len__(self) -> int:
+        return len(self._inner_doc)
+
+    def __repr__(self) -> str:
+        return f"{self._inner_doc}"
