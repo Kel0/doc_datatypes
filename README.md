@@ -4,8 +4,9 @@
 git clone git@github.com:Kel0/doc_dict.git
 ```
 ```
-pip install doc-dict
+pip install doc-datatypes
 ```
+[pypi](https://pypi.org/project/doc-datatypes/)
 ## Usage
 ### Documentable list
 ```
