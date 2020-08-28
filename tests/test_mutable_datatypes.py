@@ -40,6 +40,9 @@ def test_documented_list_case_1():
     assert my_list_second.get_with_doc(2) == "3 -> no docs"
     assert my_list_second.get_doc(2) == "no docs"
 
+    my_list_third = DocumentedList([])
+    assert list(my_list_third) == []
+
     with raises(ValueError):
         DocumentedList([1], ["First", "Second"])
 
