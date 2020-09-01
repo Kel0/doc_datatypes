@@ -1,5 +1,8 @@
 import invoke
 
+from pathlib import Path
+
+
 PACKAGE = "doc_datatypes"
 REQUIRED_COVERAGE = 90
 
@@ -29,7 +32,7 @@ def check(arg, style=True, typing=True):
         arg.run(f"isort --diff {PACKAGE} tests --check-only", echo=True)
         arg.run(f"black --diff {PACKAGE} tests --check", echo=True)
     if typing:
-        arg.run(f"mypy --no-incremental --cache-dir=/dev/null {PACKAGE}", echo=True)
+        arg.run(f"mypy --no-incremental --cache-dir=/dev/null {PACKAGE} tests", echo=True)
 
 
 @invoke.task
@@ -39,3 +42,16 @@ def test(arg):
         pty=True,
         echo=True,
     )
+
+
+@invoke.task
+def hooks(arg):
+    invoke_path = Path(arg.run("which invoke", hide=True).stdout[:-1])
+    for src_path in Path(".hooks").iterdir():
+        dst_path = Path(".git/hooks") / src_path.name
+        print(f"Installing: {dst_path}")
+        with open(str(src_path), "r") as f:
+            src_data = f.read()
+        with open(str(dst_path), "w") as f:
+            f.write(src_data.format(invoke_path=invoke_path.parent))
+        arg.run(f"chmod +x {dst_path}")

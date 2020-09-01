@@ -11,27 +11,25 @@ pip install doc-datatypes
 ### Documentable list
 ```
 from doc_datatypes.mutable_datatypes import DocumentedList
-from doc_datatypes.datatypes import DocumentedIndex
 
 
-my_list: List[DocumentedIndex] = DocumentedList(
+my_list: DocumentedList = DocumentedList(
     [1, 2, 3], ["First", "Second", "Third"]
 )
-my_list_2: List[DocumentedIndex] = DocumentedList(
+my_list_2: DocumentedList = DocumentedList(
     [[1, "First"], [2, "Second"], [3, "Third"]]
 )
 ```
 ### Documentable dict
 ```
 from doc_datatypes.mutable_datatypes import DocumentedDict
-from doc_datatypes.datatypes import DocumentedValue
 
 
-my_dict: Dict[str, DocumentedValue] = DocumentedDict(
+my_dict: DocumentedDict = DocumentedDict(
     {"name": "Alex"}, {"name": "Name field"}
 )
 
-my_dict_2: Dict[str, DocumentedValue] = DocumentedDict(
+my_dict_2: DocumentedDict = DocumentedDict(
     {"name": "Alex", "name_doc": "Name field"}
 )
 ```
