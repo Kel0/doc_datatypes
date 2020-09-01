@@ -19,4 +19,4 @@ def test_documented_index():
     assert name_index() == "Alex"
     assert name_index.value == "Alex"
     assert name_index.doc == "Name field"
-    assert repr(name_index) == "Alex -> Name field"
+    assert repr(name_index) == '"Alex" -> Name field'
