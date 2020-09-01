@@ -21,6 +21,8 @@ def test_documented_list_general_cases():
     assert my_list.get_with_doc(0) == "1 -> no docs"
     my_list.append(1)
     assert my_list.get_with_doc(-1) == "1 -> no docs"
+    my_list.append([1, "My item"])
+    assert my_list.get_with_doc(-1) == "1 -> My item"
 
 
 def test_documented_list_case_1():
@@ -48,7 +50,9 @@ def test_documented_list_case_1():
 
 
 def test_documented_list_case_2():
-    my_list = DocumentedList([[1, "First"], [2, "Second"], [3, "Third"]])
+    my_list: DocumentedList = DocumentedList(
+        [[1, "First"], [2, "Second"], [3, "Third"]]
+    )
     assert repr(my_list) == "[1 -> First, 2 -> Second, 3 -> Third]"
     assert my_list[0] == 1
     assert my_list[1] == 2
@@ -70,12 +74,12 @@ def test_documnted_dict_general_cases():
 
     assert my_dict == {}
     my_dict["name"] = "Alex"
-    assert f'{my_dict.get_with_doc("name")}' == '{"value": "Alex", "doc": "no docs"}'
+    assert my_dict.get_with_doc("name") == '{"value": "Alex", "doc": "no docs"}'
     assert my_dict["name"] == "Alex"
 
     my_dict["name1"] = ["Alex", "My docs"]
     assert my_dict["name1"] == "Alex"
-    assert f'{my_dict.get_with_doc("name1")}' == '{"value": "Alex", "doc": "My docs"}'
+    assert my_dict.get_with_doc("name1") == '{"value": "Alex", "doc": "My docs"}'
 
     del my_dict["name1"]
     assert list(my_dict.keys()) == ["name"]
@@ -86,16 +90,13 @@ def test_documented_dict_case_1():
 
     assert repr(my_dict) == """{'name': {"value": "Alex", "doc": "Name field"}}"""
     assert my_dict["name"] == "Alex"
-    assert f'{my_dict.get_with_doc("name")}' == '{"value": "Alex", "doc": "Name field"}'
+    assert my_dict.get_with_doc("name") == '{"value": "Alex", "doc": "Name field"}'
 
     my_dict_second = DocumentedDict({"name": "Alex"}, {})
 
     assert repr(my_dict_second) == """{'name': {"value": "Alex", "doc": "no docs"}}"""
     assert my_dict_second["name"] == "Alex"
-    assert (
-        f'{my_dict_second.get_with_doc("name")}'
-        == '{"value": "Alex", "doc": "no docs"}'
-    )
+    assert my_dict_second.get_with_doc("name") == '{"value": "Alex", "doc": "no docs"}'
 
     with raises(ValueError):
         DocumentedDict({}, {"s": 1})
@@ -106,7 +107,7 @@ def test_documented_dict_case_2():
 
     assert repr(my_dict) == """{'name': {"value": "Alex", "doc": "Name field"}}"""
     assert my_dict["name"] == "Alex"
-    assert f'{my_dict.get_with_doc("name")}' == '{"value": "Alex", "doc": "Name field"}'
+    assert my_dict.get_with_doc("name") == '{"value": "Alex", "doc": "Name field"}'
 
     my_dict_second = DocumentedDict({"name": "Alex"})
 

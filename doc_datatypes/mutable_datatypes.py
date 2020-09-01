@@ -1,21 +1,24 @@
-import collections
+from collections.abc import MutableMapping, MutableSequence
 from typing import Any, Dict, List, Optional, Tuple, Union
 
 from .datatypes import DocumentedIndex, DocumentedValue
 
 DICT_CONTENT_TYPE = Dict[Union[str, int, float], Any]
+DOC_LIST_CONTENT_TYPE = Union[List[Any], List[list]]
 
 
-class DocumentedList(collections.abc.MutableSequence):
-    def __init__(self, content: List[Any], docs_content: List[str] = None) -> None:
-        self._inner_list = list()
+class DocumentedList(MutableSequence):
+    def __init__(
+        self, content: DOC_LIST_CONTENT_TYPE, docs_content: List[str] = None
+    ) -> None:
+        self._inner_list: List[DocumentedIndex[Any]] = []
         content, docs = self.__validate_docs_content(content, docs_content)
 
         for value, doc in zip(content, docs):
             self._inner_list.append(DocumentedIndex(value=value, doc=doc))
 
     def __validate_docs_content(  # type: ignore
-        self, content: List[Any], docs_content: Optional[List[str]] = None
+        self, content: DOC_LIST_CONTENT_TYPE, docs_content: Optional[List[str]] = None
     ) -> Tuple[List[Any], List[str]]:
         """Validate content & docs_content data
 
@@ -37,7 +40,7 @@ class DocumentedList(collections.abc.MutableSequence):
             if len(content) >= len(docs_content):
                 for doc in range(len(content) - len(docs_content)):
                     docs_content.append("no docs")
-                return content, docs_content
+                return content, docs_content  # type: ignore
 
             elif len(content) < len(docs_content):
                 raise ValueError("Content length less than docs content")
@@ -68,14 +71,14 @@ class DocumentedList(collections.abc.MutableSequence):
     def __delitem__(self, index: int) -> None:  # type: ignore
         self._inner_list.__delitem__(index)
 
-    def insert(self, index: int, value: Any) -> None:
+    def insert(self, index: int, value: Union[str, int, list]) -> None:
         if not isinstance(value, list):
             value = [value, "no docs"]
         elif len(value) == 1:
             value.append("no docs")
         self._inner_list.insert(index, DocumentedIndex(value=value[0], doc=value[1]))
 
-    def __setitem__(self, index: int, value: Any) -> None:  # type: ignore
+    def __setitem__(self, index: int, value: Union[str, int, list]) -> None:  # type: ignore
         if not isinstance(value, list):
             value = [value, "no docs"]
         elif len(value) == 1:
@@ -87,14 +90,14 @@ class DocumentedList(collections.abc.MutableSequence):
     def __getitem__(self, index: int) -> Any:  # type: ignore
         return self._inner_list.__getitem__(index)()
 
-    def append(self, value: Any) -> None:
+    def append(self, value: Union[str, int, list]) -> None:
         self.insert(len(self) + 1, value)
 
     def __repr__(self) -> str:
         return f"{self._inner_list}"
 
 
-class DocumentedDict(collections.abc.MutableMapping):
+class DocumentedDict(MutableMapping):
     def __init__(
         self,
         content: DICT_CONTENT_TYPE,
@@ -113,9 +116,7 @@ class DocumentedDict(collections.abc.MutableMapping):
             )
 
     def __validate_docs_content(
-        self,
-        content: Dict[Union[str, int, float], Any],
-        content_docs: Optional[Dict[Union[str, int, float], Any]],
+        self, content: DICT_CONTENT_TYPE, content_docs: Optional[DICT_CONTENT_TYPE],
     ) -> Tuple[DICT_CONTENT_TYPE, DICT_CONTENT_TYPE]:
         if content_docs is not None:
             if len(content) < len(content_docs):
@@ -141,8 +142,8 @@ class DocumentedDict(collections.abc.MutableMapping):
 
     def get_with_doc(
         self, key: Union[str, int, float], placeholder: Optional[Any] = None
-    ) -> Any:
-        return self._inner_doc.get(key, placeholder)
+    ) -> str:
+        return f"{self._inner_doc.get(key, placeholder)}"
 
     def __getitem__(self, key) -> Any:
         return self._inner_doc[key]()
