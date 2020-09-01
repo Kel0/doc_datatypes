@@ -4,6 +4,13 @@ from typing import Any, Dict, Generic, TypeVar, Union
 T = TypeVar("T")
 
 
+def _display_concrete_type(content: T) -> Any:
+    if isinstance(content, str):
+        return f'"{content}"'
+    else:
+        return content
+
+
 @dataclass
 class DocumentedValue(Generic[T]):
     value: T
@@ -16,7 +23,12 @@ class DocumentedValue(Generic[T]):
         return self.value
 
     def __repr__(self) -> str:
-        return "{" f'"value": "{self.value}", ' f'"doc": "{self.doc}"' "}"
+        return (
+            "{"
+            f'"value": {_display_concrete_type(self.value)}, '
+            f'"doc": {_display_concrete_type(self.doc)}'
+            "}"
+        )
 
 
 @dataclass
@@ -28,4 +40,4 @@ class DocumentedIndex(Generic[T]):
         return self.value
 
     def __repr__(self) -> str:
-        return f"{self.value} -> {self.doc}"
+        return f"{_display_concrete_type(self.value)} -> {self.doc}"

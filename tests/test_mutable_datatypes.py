@@ -16,9 +16,9 @@ def test_documented_list_general_cases():
     my_list.insert(4, [5])
     assert my_list.get_with_doc(4) == "5 -> no docs"
     my_list[0] = "1"
-    assert my_list.get_with_doc(0) == "1 -> no docs"
+    assert my_list.get_with_doc(0) == '"1" -> no docs'
     my_list[0] = ["1"]
-    assert my_list.get_with_doc(0) == "1 -> no docs"
+    assert my_list.get_with_doc(0) == '"1" -> no docs'
     my_list.append(1)
     assert my_list.get_with_doc(-1) == "1 -> no docs"
     my_list.append([1, "My item"])
