@@ -1,7 +1,7 @@
 # doc_datatypes
 ## Installation
 ```
-git clone git@github.com:Kel0/doc_dict.git
+git clone https://github.com/Kel0/doc_datatypes.git
 ```
 ```
 pip install doc-datatypes
