@@ -1,4 +1,4 @@
-# doc_datatypes
+# doc_datatypes [![Build Status](https://cloud.drone.io/api/badges/Kel0/doc_datatypes/status.svg?branch=master)](https://cloud.drone.io/Kel0/doc_datatypes/) [![BCH compliance](https://bettercodehub.com/edge/badge/Kel0/doc_datatypes?branch=master)](https://bettercodehub.com/results/Kel0/doc_datatypes)
 ## Installation
 ```
 git clone https://github.com/Kel0/doc_datatypes.git
